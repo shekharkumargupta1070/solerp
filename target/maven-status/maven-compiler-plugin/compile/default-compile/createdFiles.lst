@@ -61,6 +61,7 @@ com\sol\erp\Estimation$1.class
 com\sol\erp\ui\custom\SolCalendar2$1.class
 com\sol\erp\SendApprove$1.class
 com\sol\erp\ProjectStatus.class
+com\sol\erp\ExportProjectReport.class
 com\sol\erp\test\DDMMYYTest.class
 com\sol\erp\dto\ProjectDTO.class
 com\sol\erp\EmpPerform2$processReport.class

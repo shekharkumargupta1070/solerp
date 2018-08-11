@@ -916,7 +916,8 @@ public class HRMainFrame extends javax.swing.JFrame {
 	}
 
 	private void ma14ActionPerformed(ActionEvent paramActionEvent) {
-		setVisible(false);
+		//setVisible(false);
+		System.exit(0);
 	}
 
 	private void ma2ActionPerformed(ActionEvent paramActionEvent) {

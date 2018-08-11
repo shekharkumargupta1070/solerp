@@ -128,6 +128,7 @@ public class TechMainFrame implements ActionListener, MouseListener, KeyListener
     JMenuItem menuItemClientWiseReport = new JMenuItem("Client Wise Report ");
     JMenuItem menuItemQuotationList = new JMenuItem("Quotation List");
     JMenuItem menuItemTimeManagement = new JMenuItem("Training/Ideal/Management Time");
+    JMenuItem menuItemExportProjectReport = new JMenuItem("Export Project Report");
 
     JMenu menuDrawingLog = new JMenu("Drawing Log");
     JMenu menuDrawingIndex = new JMenu("Drawing Index");
@@ -514,6 +515,9 @@ public class TechMainFrame implements ActionListener, MouseListener, KeyListener
         menuItemProjectPerformanceReport.addActionListener(this);
         menuReportSOL.addSeparator();
         menuReportSOL.add(menuItemTimeManagement);
+        menuReportSOL.add(menuItemExportProjectReport);
+        menuItemExportProjectReport.addActionListener(this);
+
 
         menuReportClients.add(menuItemExtraHrsReport);
         menuItemExtraHrsReport.addActionListener(this);
@@ -1148,6 +1152,11 @@ public class TechMainFrame implements ActionListener, MouseListener, KeyListener
         if (paramActionEvent.getSource() == menuItemTimeManagement) {
             ExtraTime localObject = new ExtraTime();
             ((ExtraTime) localObject).showForm();
+        }
+
+        if(paramActionEvent.getSource() == menuItemExportProjectReport){
+            ExportProjectReport exportProjectReport = new ExportProjectReport();
+            exportProjectReport.showForm();
         }
 
         if (paramActionEvent.getSource() == menuItemCreateItemCode) {

@@ -1,75 +1,5 @@
 package com.sol.erp;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.print.PrinterException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.filechooser.FileSystemView;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DataFormatter;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-
 import com.sol.erp.constants.ApplicationConstants;
 import com.sol.erp.dao.AttendanceDAO;
 import com.sol.erp.dto.AttendanceDTO;
@@ -77,14 +7,34 @@ import com.sol.erp.dto.ShiftDefinitionDTO;
 import com.sol.erp.ui.custom.SolCalendar3;
 import com.sol.erp.ui.custom.SolTableFinder;
 import com.sol.erp.ui.custom.SolTableModel;
-import com.sol.erp.util.DBConnectionUtil;
-import com.sol.erp.util.DateCalculationUtil;
-import com.sol.erp.util.DateDifferencesUtil;
-import com.sol.erp.util.SaviorConnectionUtil;
-import com.sol.erp.util.SessionUtil;
-import com.sol.erp.util.TimeUtil;
-import com.sol.erp.util.UIUtil;
+import com.sol.erp.util.*;
 import com.sol.erp.util.formater.SolDateFormatter;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.filechooser.FileSystemView;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.print.PrinterException;
+import java.io.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.MessageFormat;
+import java.util.*;
+import java.util.List;
 
 public class Attendance implements ActionListener, KeyListener, TableModelListener, MouseListener, FocusListener {
 
@@ -691,7 +641,7 @@ public class Attendance implements ActionListener, KeyListener, TableModelListen
 				textFieldCalendar.setText(formater.format(lastdate));
 			}
 		} catch (Exception localException) {
-			JOptionPane.showMessageDialog(frameMain, localException.getMessage().toString());
+			JOptionPane.showMessageDialog(frameMain, localException.getMessage());
 		} finally {
 			DBConnectionUtil.closeConnection(rs, stat, con);
 		}
@@ -806,7 +756,7 @@ public class Attendance implements ActionListener, KeyListener, TableModelListen
 				labelDBStatus.setBackground(Color.red);
 			}
 		} catch (Exception localException) {
-			labelDBStatus.setText("DB Status : " + localException.getMessage().toString());
+			labelDBStatus.setText("DB Status : " + localException.getMessage());
 			labelDBStatus.setBackground(Color.red);
 		} finally {
 			DBConnectionUtil.closeConnection(rs, stat, con);
@@ -914,7 +864,7 @@ public class Attendance implements ActionListener, KeyListener, TableModelListen
 
 			tableMain.revalidate();
 		} catch (Exception localException) {
-			JOptionPane.showMessageDialog(frameMain, localException.getMessage().toString());
+			JOptionPane.showMessageDialog(frameMain, localException.getMessage());
 		} finally {
 			DBConnectionUtil.closeConnection(rs, stat, con);
 		}
@@ -997,7 +947,7 @@ public class Attendance implements ActionListener, KeyListener, TableModelListen
 					defaultTableModelMain.setValueAt(str9, i, 14);
 				}
 			} catch (Exception localException) {
-				JOptionPane.showMessageDialog(frameMain, localException.getMessage().toString());
+				JOptionPane.showMessageDialog(frameMain, localException.getMessage());
 			} finally {
 				DBConnectionUtil.closeConnection(rs, stat, con);
 			}
@@ -1052,7 +1002,7 @@ public class Attendance implements ActionListener, KeyListener, TableModelListen
 
 			}
 		} catch (Exception localException2) {
-			JOptionPane.showMessageDialog(frameMain, localException2.getMessage().toString());
+			JOptionPane.showMessageDialog(frameMain, localException2.getMessage());
 		} finally {
 			DBConnectionUtil.closeConnection(rs, stat, con);
 		}
@@ -1177,7 +1127,7 @@ public class Attendance implements ActionListener, KeyListener, TableModelListen
 
 			}
 		} catch (Exception localException) {
-			JOptionPane.showMessageDialog(frameMain, localException.getMessage().toString());
+			JOptionPane.showMessageDialog(frameMain, localException.getMessage());
 		} finally {
 			DBConnectionUtil.closeConnection(rs, stat, con);
 		}
@@ -1468,7 +1418,7 @@ public class Attendance implements ActionListener, KeyListener, TableModelListen
 							defaultTableModelMain.setValueAt("0", k, 6);
 						}
 					} catch (Exception localException) {
-						JOptionPane.showMessageDialog(frameMain, localException.getMessage().toString());
+						JOptionPane.showMessageDialog(frameMain, localException.getMessage());
 					}
 					String str6 = String.valueOf(defaultTableModelMain.getValueAt(k, 4));
 					if (str6.length() > 1) {
@@ -1589,7 +1539,7 @@ public class Attendance implements ActionListener, KeyListener, TableModelListen
 						new Boolean(false), breakUpdate, ot2 });
 			}
 		} catch (Exception localException) {
-			JOptionPane.showMessageDialog(frameMain, localException.getMessage().toString());
+			JOptionPane.showMessageDialog(frameMain, localException.getMessage());
 		} finally {
 			DBConnectionUtil.closeConnection(rs, stat, con);
 		}
@@ -1628,7 +1578,7 @@ public class Attendance implements ActionListener, KeyListener, TableModelListen
 				}
 			}
 		} catch (Exception localException) {
-			progress.setString("DB Status : " + localException.getMessage().toString());
+			progress.setString("DB Status : " + localException.getMessage());
 		} finally {
 			DBConnectionUtil.closeConnection(rs, stat, con);
 		}
@@ -1700,7 +1650,7 @@ public class Attendance implements ActionListener, KeyListener, TableModelListen
 						" ", " ", str17, new Boolean(str18), str20, str21, str22 });
 			}
 		} catch (Exception localException) {
-			JOptionPane.showMessageDialog(frameMain, localException.getMessage().toString());
+			JOptionPane.showMessageDialog(frameMain, localException.getMessage());
 		} finally {
 			DBConnectionUtil.closeConnection(rs, stat, con);
 		}
@@ -1835,7 +1785,7 @@ public class Attendance implements ActionListener, KeyListener, TableModelListen
 					stat.executeUpdate();
 				}
 			} catch (Exception localException) {
-				progress.setString("DB Status : " + localException.getMessage().toString());
+				progress.setString("DB Status : " + localException.getMessage());
 			} finally {
 				DBConnectionUtil.closeConnection(stat, con);
 			}
@@ -1981,7 +1931,7 @@ public class Attendance implements ActionListener, KeyListener, TableModelListen
 					}
 				}
 			} catch (Exception localException) {
-				labelDBStatus.setText(localException.getMessage().toString());
+				labelDBStatus.setText(localException.getMessage());
 			} finally {
 				DBConnectionUtil.closeConnection(rs, stat, con);
 			}
@@ -2032,7 +1982,7 @@ public class Attendance implements ActionListener, KeyListener, TableModelListen
 					progress.setString("DB Status : Break Time Updating for " + str6);
 				}
 			} catch (Exception localException) {
-				progress.setString("DB Status : " + localException.getMessage().toString());
+				progress.setString("DB Status : " + localException.getMessage());
 			} finally {
 				DBConnectionUtil.closeConnection(stat, con);
 			}
@@ -2087,7 +2037,7 @@ public class Attendance implements ActionListener, KeyListener, TableModelListen
 				defaultTableModelMain.setValueAt(str10, i, 9);
 			}
 		} catch (Exception localException) {
-			progress.setString("DB Status : " + localException.getMessage().toString());
+			progress.setString("DB Status : " + localException.getMessage());
 		} finally {
 			DBConnectionUtil.closeConnection(stat, con);
 		}
@@ -2126,7 +2076,7 @@ public class Attendance implements ActionListener, KeyListener, TableModelListen
 			}
 
 		} catch (Exception localException) {
-			progress.setString("DB Status : " + localException.getMessage().toString());
+			progress.setString("DB Status : " + localException.getMessage());
 		} finally {
 			DBConnectionUtil.closeConnection(stat, con);
 		}
@@ -2168,7 +2118,7 @@ public class Attendance implements ActionListener, KeyListener, TableModelListen
 				defaultTableModelMain.setValueAt(str6, i, 9);
 			}
 		} catch (Exception localException) {
-			progress.setString("DB Status : " + localException.getMessage().toString());
+			progress.setString("DB Status : " + localException.getMessage());
 		} finally {
 			DBConnectionUtil.closeConnection(stat, con);
 		}
@@ -2269,7 +2219,7 @@ public class Attendance implements ActionListener, KeyListener, TableModelListen
 	public void exportReportAsExcel() {
 		JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
 		int returnValue = fileChooser.showSaveDialog(null);
-		if (returnValue == fileChooser.APPROVE_OPTION) {
+		if (returnValue == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
 			createExcelFile(file.getAbsolutePath());
 		}
@@ -2301,7 +2251,7 @@ public class Attendance implements ActionListener, KeyListener, TableModelListen
 
 			JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
 			int returnValue = fileChooser.showOpenDialog(null);
-			if (returnValue == fileChooser.APPROVE_OPTION) {
+			if (returnValue == JFileChooser.APPROVE_OPTION) {
 				java.io.File selectedFile = fileChooser.getSelectedFile();
 				String filePath = selectedFile.getAbsolutePath();
 				System.out.println("selectedFile: " + selectedFile);
@@ -2385,7 +2335,7 @@ public class Attendance implements ActionListener, KeyListener, TableModelListen
 					"This Function is Use to ReCalculat the Entities from Top to Bottom. "
 							+ "\n In Case of Major Mistakes. Would you Like to Procced. "
 							+ "\n This is Good to Contact to your ERP. Manager",
-					"ReCalculation", 0, 3, null, (Object[]) localObject, localObject);
+					"ReCalculation", 0, 3, null, localObject, localObject);
 
 			String dateString = textFieldCalendar.getText();
 			breakTimeMap = localBreakTimeEntry.getTotalBreakTime(dateString);
