@@ -5,21 +5,15 @@
  */
 package com.sol.erp;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-
 import com.sol.erp.constants.ApplicationConstants;
 import com.sol.erp.dao.ProjectDAO;
 import com.sol.erp.util.DBConnectionUtil;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *

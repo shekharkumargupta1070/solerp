@@ -1,12 +1,12 @@
 package com.sol.erp.util.formater;
 
+import com.sol.erp.constants.ApplicationConstants;
+
 import java.sql.Date;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-
-import com.sol.erp.constants.ApplicationConstants;
 
 public class SolDateFormatter {
 
@@ -248,5 +248,4 @@ public class SolDateFormatter {
 		int j = i * paramInt / 100;
 		return convertMinuteToHRS(j);
 	}
-
 }

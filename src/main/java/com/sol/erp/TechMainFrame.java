@@ -1,41 +1,19 @@
 package com.sol.erp;
 
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import com.sol.erp.constants.ApplicationConstants;
+import com.sol.erp.util.DBConnectionUtil;
+import com.sol.erp.util.SessionUtil;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import java.awt.*;
+import java.awt.event.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.util.GregorianCalendar;
-
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDesktopPane;
-import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.JToolBar;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-
-import com.sol.erp.constants.ApplicationConstants;
-import com.sol.erp.util.DBConnectionUtil;
-import com.sol.erp.util.SessionUtil;
 
 public class TechMainFrame implements ActionListener, MouseListener, KeyListener {
 
@@ -1156,7 +1134,8 @@ public class TechMainFrame implements ActionListener, MouseListener, KeyListener
 
         if(paramActionEvent.getSource() == menuItemExportProjectReport){
             ExportProjectReport exportProjectReport = new ExportProjectReport();
-            exportProjectReport.showForm();
+            desktop.add(exportProjectReport.getScreen());
+            desktop.moveToFront(exportProjectReport.getScreen());
         }
 
         if (paramActionEvent.getSource() == menuItemCreateItemCode) {

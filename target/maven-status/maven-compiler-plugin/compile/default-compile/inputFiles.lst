@@ -55,6 +55,7 @@ D:\GitProject\solerp\src\main\java\com\sol\erp\ui\custom\SolCalendar.java
 D:\GitProject\solerp\src\main\java\com\sol\erp\SalarySlab.java
 D:\GitProject\solerp\src\main\java\com\sol\erp\ui\custom\SolTableFinder.java
 D:\GitProject\solerp\src\main\java\com\sol\erp\DeptList.java
+D:\GitProject\solerp\src\main\java\com\sol\erp\exports\dto\ProjectProgressDTO.java
 D:\GitProject\solerp\src\main\java\com\sol\erp\dao\QuotationDAO.java
 D:\GitProject\solerp\src\main\java\com\sol\erp\query.java
 D:\GitProject\solerp\src\main\java\com\sol\erp\SuperAdminAccess.java
@@ -172,6 +173,7 @@ D:\GitProject\solerp\src\main\java\com\sol\erp\ChangePassword.java
 D:\GitProject\solerp\src\main\java\com\sol\erp\dao\UtilListQuery.java
 D:\GitProject\solerp\src\main\java\com\sol\erp\ProjectManPower.java
 D:\GitProject\solerp\src\main\java\com\sol\erp\util\TimeUtil.java
+D:\GitProject\solerp\src\main\java\com\sol\erp\exports\util\ReportUtil.java
 D:\GitProject\solerp\src\main\java\com\sol\erp\SalaryCalc.java
 D:\GitProject\solerp\src\main\java\com\sol\erp\constants\ApplicationConstants.java
 D:\GitProject\solerp\src\main\java\com\sol\erp\CurrentReport.java

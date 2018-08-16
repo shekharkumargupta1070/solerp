@@ -40,6 +40,7 @@ com\sol\erp\HRMainFrame$22.class
 com\sol\erp\DailyTimeSheet$ColoredTableCellRenderer.class
 com\sol\erp\WorkAllot$4.class
 com\sol\erp\ui\custom\SolTableFinder.class
+com\sol\erp\exports\util\ReportUtil$ACTVITIES.class
 com\sol\erp\EmpRegister$ColoredTableCellRenderer.class
 com\sol\erp\HRMainFrame$29.class
 com\sol\erp\Estimation$ColoredTableCellRenderer.class
@@ -206,6 +207,7 @@ com\sol\erp\HRMainFrame$23.class
 com\sol\erp\ManpowerAvail$2.class
 com\sol\erp\ProjectStatus$ColoredTableCellRenderer1.class
 com\sol\erp\ItemTB.class
+com\sol\erp\exports\util\ReportUtil.class
 com\sol\erp\dto\ShiftDefinitionDTO.class
 com\sol\erp\EmpFactorReport.class
 com\sol\erp\HRMainFrame$10.class
@@ -364,6 +366,7 @@ com\sol\erp\WorkAllot$3.class
 com\sol\erp\EmpLeaveTB.class
 com\sol\erp\Estimation3.class
 com\sol\erp\ProjectList$myPrint.class
+com\sol\erp\exports\dto\ProjectProgressDTO.class
 com\sol\erp\WastedTime.class
 com\sol\erp\RevisionTime.class
 com\sol\erp\ManpowerAvail$Renderer2.class

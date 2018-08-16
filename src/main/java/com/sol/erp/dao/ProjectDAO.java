@@ -1,25 +1,17 @@
 package com.sol.erp.dao;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import com.sol.erp.EmpTB;
 import com.sol.erp.constants.ApplicationConstants;
 import com.sol.erp.dto.ProjectDTO;
 import com.sol.erp.util.DBConnectionUtil;
 import com.sol.erp.util.formater.SolDateFormatter;
+
+import java.sql.*;
+import java.sql.Date;
+import java.text.DecimalFormat;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ProjectDAO {
 
@@ -1294,4 +1286,110 @@ public class ProjectDAO {
         return result;
     }
 
+    public static List<String> getProjectNumber(String fromProject, String toProject){
+        Connection con = null;
+        PreparedStatement stat = null;
+        ResultSet rs = null;
+
+        String query = "select distinct(PROJECT_NO) from estimation_mp where project_no between ? and ?";
+        List<String> projectNumberList = new ArrayList<>();
+        try {
+            con = DBConnectionUtil.getConnection();
+            stat = con.prepareStatement(query);
+            stat.setString(1, fromProject);
+            stat.setString(2, toProject);
+            System.out.println("Query: "+stat.toString());
+            rs = stat.executeQuery();
+
+            while (rs.next()) {
+                projectNumberList.add(rs.getString(1));
+            }
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage());
+        } finally {
+            DBConnectionUtil.closeConnection(rs, stat, con);
+        }
+
+        return projectNumberList;
+    }
+
+    //get hrs of details, checking or tl. d,c,t.
+    public static float getProjectEstimatedHrs(String projectNumber, String hrsOf){
+        float totalHrs = 0;
+
+        String hrsOfString = "";
+        if(hrsOf.equalsIgnoreCase("d") ){
+            hrsOfString = "DTL_TIME";
+        }
+        if(hrsOf.equalsIgnoreCase("c")){
+            hrsOfString = "CHK_TIME";
+        }
+        if (hrsOf.equalsIgnoreCase("t")){
+            hrsOfString = "TL_TIME";
+        }
+
+        Connection con = null;
+        PreparedStatement stat = null;
+        ResultSet rs = null;
+
+        String query = "SELECT sum("+hrsOfString+" * SHEET_QTY) FROM estimation_mp where PROJECT_NO = ?";
+        //System.out.println("Query: "+query);
+        try {
+            con = DBConnectionUtil.getConnection();
+            stat = con.prepareStatement(query);
+            stat.setString(1, projectNumber);
+            rs = stat.executeQuery();
+            System.out.println(stat);
+
+            while (rs.next()) {
+                totalHrs = rs.getFloat(1);
+            }
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage());
+        } finally {
+            DBConnectionUtil.closeConnection(rs, stat, con);
+        }
+
+        return totalHrs;
+    }
+
+    public static float getProjectUsedHrs(String projectNumber, String hrsOf){
+        float totalHrs = 0;
+
+        String hrsOfString = "";
+        if(hrsOf.equalsIgnoreCase("d") ){
+            hrsOfString = "D";
+        }
+        if(hrsOf.equalsIgnoreCase("c")){
+            hrsOfString = "C";
+        }
+        if (hrsOf.equalsIgnoreCase("t")){
+            hrsOfString = "J";
+        }
+
+        Connection con = null;
+        PreparedStatement stat = null;
+        ResultSet rs = null;
+
+        String query = "select sum(TOTAL_TIME) from hrtimemaster where D_C = ? and PROJECT_NO = ?";
+        System.out.println("Query: "+query);
+        try {
+            con = DBConnectionUtil.getConnection();
+            stat = con.prepareStatement(query);
+            stat.setString(1, hrsOf);
+            stat.setString(2, projectNumber);
+            rs = stat.executeQuery();
+            System.out.println(stat);
+
+            while (rs.next()) {
+                totalHrs = rs.getFloat(1);
+            }
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage());
+        } finally {
+            DBConnectionUtil.closeConnection(rs, stat, con);
+        }
+
+        return totalHrs;
+    }
 }

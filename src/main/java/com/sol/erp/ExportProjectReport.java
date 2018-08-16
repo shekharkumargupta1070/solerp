@@ -1,11 +1,16 @@
 package com.sol.erp;
 
+import com.sol.erp.exports.dto.ProjectProgressDTO;
+import com.sol.erp.exports.util.ReportUtil;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
+import java.util.Map;
 
 public class ExportProjectReport {
 
-    private JFrame frame;
+    private JInternalFrame frame;
     private JLabel fromLabel;
     private JLabel toLabel;
     private JTextField fromText;
@@ -16,7 +21,7 @@ public class ExportProjectReport {
     Container container;
 
     public ExportProjectReport(){
-        frame = new JFrame("Export Project Report");
+        frame = new JInternalFrame("Export Project Report");
         northComponentPanel = new JPanel();
         fromLabel = new JLabel("From Project: ");
         toLabel = new JLabel("To Project: ");
@@ -34,12 +39,28 @@ public class ExportProjectReport {
         container = frame.getContentPane();
         container.setLayout(new BorderLayout());
         container.add(northComponentPanel, BorderLayout.NORTH);
+
+        submitButton.addActionListener((actionEvent) -> {
+            System.out.println("ActionSource: "+actionEvent.getSource());
+            String fromProjectNo = fromText.getText();
+            String toProjectNo = toText.getText();
+            Map<String, List<ProjectProgressDTO>> progressMap = ReportUtil.exportProjectProgressReport(fromProjectNo, toProjectNo);
+
+
+            progressMap.forEach( (k, v) -> {
+                //System.out.println(v);
+                v.forEach((e) -> {
+                    System.out.println(e.getProjectNo() + "\t" +e.getActivity() + "\t" + e.getEstimatedHrs() + "\t" + e.getSpentHrs() + "\t" + e.getUsedPercentage());
+                });
+            });
+            System.out.println(ReportUtil.class.getName() + " : exportProjectProgressReport [END] ");
+        });
     }
 
-    public void showForm(){
+    public JInternalFrame getScreen(){
         frame.setSize(600, 200);
-        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        return frame;
     }
 
 

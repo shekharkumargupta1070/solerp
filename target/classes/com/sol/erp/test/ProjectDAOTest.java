@@ -8,9 +8,9 @@ public class ProjectDAOTest {
 	public static void testProjectDetails() {
 		ProjectDAO.chacheInMemory();
 
-		System.out.println("Project Name: " + ProjectDAO.getProjectName("2015032"));
-		System.out.println("Client Name: " + ProjectDAO.getClientName("2015032"));
-		System.out.println("Team Leader: " + ProjectDAO.getTeamLeader("2015032"));
+		//System.out.println("Project Name: " + ProjectDAO.getProjectName("2015032"));
+		//System.out.println("Client Name: " + ProjectDAO.getClientName("2015032"));
+		//System.out.println("Team Leader: " + ProjectDAO.getTeamLeader("2015032"));
 	}
 	
 	public static void testProjectNumberGeneration(){
@@ -26,7 +26,7 @@ public class ProjectDAOTest {
 	}
 
 	public static void main(String args[]) {
-		testFindByProjectNumber();
-		
+		//testFindByProjectNumber();
+		testProjectDetails();
 	}
 }
