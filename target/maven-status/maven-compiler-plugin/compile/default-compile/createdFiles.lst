@@ -384,6 +384,7 @@ com\sol\erp\SupportFrame.class
 com\sol\erp\util\formater\SolDateFormatter.class
 com\sol\erp\dao\UtilListQuery.class
 com\sol\erp\SalarySheet$2.class
+com\sol\erp\ExportProjectReport$1.class
 com\sol\erp\HolidayList.class
 com\sol\erp\Shift$1.class
 com\sol\erp\runReport.class

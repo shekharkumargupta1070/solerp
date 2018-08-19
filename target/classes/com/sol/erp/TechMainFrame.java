@@ -1136,6 +1136,7 @@ public class TechMainFrame implements ActionListener, MouseListener, KeyListener
             ExportProjectReport exportProjectReport = new ExportProjectReport();
             desktop.add(exportProjectReport.getScreen());
             desktop.moveToFront(exportProjectReport.getScreen());
+
         }
 
         if (paramActionEvent.getSource() == menuItemCreateItemCode) {

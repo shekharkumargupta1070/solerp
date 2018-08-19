@@ -7,24 +7,41 @@ import java.util.*;
 
 public class ReportUtil {
 
-    private enum ACTVITIES  {
-        MODELING, EDITING, CHECKING
+    private enum ACTVITIES {
+        MODELING, EDITING, CHECKING, TOTAL
     };
 
-    public static Map<String, List<ProjectProgressDTO>> exportProjectProgressReport(String fromProjectNo, String toProjectNo){
-        System.out.println(ReportUtil.class.getName() + " : exportProjectProgressReport [START] ");
-        List<String> projectNumbers = ProjectDAO.getProjectNumber(fromProjectNo, toProjectNo);
-        Map<String, List<ProjectProgressDTO>> progressMap = new HashMap<>();
+    public static Map<Long, List<ProjectProgressDTO>> generateProjectProgressData(long fromProjectNo, long toProjectNo) {
+        System.out.println(ReportUtil.class.getName() + " : generateProjectProgressData [START] ");
+        List<Long> projectNumbers = ProjectDAO.getProjectNumber(fromProjectNo, toProjectNo);
+        Map<Long, List<ProjectProgressDTO>> progressMap = new HashMap<>();
 
-        for(String projectNo: projectNumbers){
+        for (long projectNo : projectNumbers) {
             List<ProjectProgressDTO> projectProgressDTOS = new ArrayList<>();
-            projectProgressDTOS.add(new ProjectProgressDTO(projectNo, "D")); //Detailing Hrs
-            projectProgressDTOS.add(new ProjectProgressDTO(projectNo, "C")); //Checking Hrs
-            projectProgressDTOS.add(new ProjectProgressDTO(projectNo, "T")); //TL Hrs
+
+            ProjectProgressDTO detailingHrs = new ProjectProgressDTO(projectNo, "D");
+            ProjectProgressDTO checkingHrs = new ProjectProgressDTO(projectNo, "C");
+            ProjectProgressDTO tlHrs = new ProjectProgressDTO(projectNo, "T");
+            ProjectProgressDTO totalHrs = new ProjectProgressDTO(projectNo, "A");//a means TOTAL hrs
+
+            totalHrs.setTotalHrs(totalHrs.getSpentHrs());
+            detailingHrs.setTotalHrs(totalHrs.getSpentHrs());
+            checkingHrs.setTotalHrs(totalHrs.getSpentHrs());
+            tlHrs.setTotalHrs((totalHrs.getSpentHrs()));
+
+
+            projectProgressDTOS.add(detailingHrs); //Detailing Hrs
+            projectProgressDTOS.add(checkingHrs); //Checking Hrs
+            projectProgressDTOS.add(tlHrs); //TL Hrs
+            projectProgressDTOS.add((totalHrs));//Total Hrs
+            //CHANGE THE LOGIC OF TOTAL ELEMENT
+
+
 
             progressMap.put(projectNo, projectProgressDTOS);
         }
 
         return progressMap;
     }
+
 }

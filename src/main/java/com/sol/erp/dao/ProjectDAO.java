@@ -1286,23 +1286,23 @@ public class ProjectDAO {
         return result;
     }
 
-    public static List<String> getProjectNumber(String fromProject, String toProject){
+    public static List<Long> getProjectNumber(long fromProject, long toProject){
         Connection con = null;
         PreparedStatement stat = null;
         ResultSet rs = null;
 
         String query = "select distinct(PROJECT_NO) from estimation_mp where project_no between ? and ?";
-        List<String> projectNumberList = new ArrayList<>();
+        List<Long> projectNumberList = new ArrayList<>();
         try {
             con = DBConnectionUtil.getConnection();
             stat = con.prepareStatement(query);
-            stat.setString(1, fromProject);
-            stat.setString(2, toProject);
-            System.out.println("Query: "+stat.toString());
+            stat.setLong(1, fromProject);
+            stat.setLong(2, toProject);
+            //System.out.println("Query: "+stat.toString());
             rs = stat.executeQuery();
 
             while (rs.next()) {
-                projectNumberList.add(rs.getString(1));
+                projectNumberList.add(rs.getLong(1));
             }
         } catch (Exception e) {
             logger.log(Level.SEVERE, e.getMessage());
@@ -1314,7 +1314,7 @@ public class ProjectDAO {
     }
 
     //get hrs of details, checking or tl. d,c,t.
-    public static float getProjectEstimatedHrs(String projectNumber, String hrsOf){
+    public static float getProjectEstimatedHrs(long projectNumber, String hrsOf){
         float totalHrs = 0;
 
         String hrsOfString = "";
@@ -1337,9 +1337,9 @@ public class ProjectDAO {
         try {
             con = DBConnectionUtil.getConnection();
             stat = con.prepareStatement(query);
-            stat.setString(1, projectNumber);
+            stat.setLong(1, projectNumber);
             rs = stat.executeQuery();
-            System.out.println(stat);
+            //System.out.println(stat);
 
             while (rs.next()) {
                 totalHrs = rs.getFloat(1);
@@ -1353,33 +1353,35 @@ public class ProjectDAO {
         return totalHrs;
     }
 
-    public static float getProjectUsedHrs(String projectNumber, String hrsOf){
+    public static float getProjectUsedHrs(long projectNumber, String hrsOf){
         float totalHrs = 0;
 
         String hrsOfString = "";
         if(hrsOf.equalsIgnoreCase("d") ){
-            hrsOfString = "D";
+            hrsOfString = "D_C = 'D' and";
         }
         if(hrsOf.equalsIgnoreCase("c")){
-            hrsOfString = "C";
+            hrsOfString = "D_C = 'C' and";
         }
         if (hrsOf.equalsIgnoreCase("t")){
-            hrsOfString = "J";
+            hrsOfString = "D_C = 'J' and";
+        }
+        if (hrsOf.equalsIgnoreCase("a")){
+            hrsOfString = "";
         }
 
         Connection con = null;
         PreparedStatement stat = null;
         ResultSet rs = null;
 
-        String query = "select sum(TOTAL_TIME) from hrtimemaster where D_C = ? and PROJECT_NO = ?";
-        System.out.println("Query: "+query);
+        String query = "select sum(TOTAL_TIME) from hrtimemaster where "+hrsOfString+"  PROJECT_NO = ?";
+        //System.out.println("Query: "+query);
         try {
             con = DBConnectionUtil.getConnection();
             stat = con.prepareStatement(query);
-            stat.setString(1, hrsOf);
-            stat.setString(2, projectNumber);
+            stat.setLong(1, projectNumber);
             rs = stat.executeQuery();
-            System.out.println(stat);
+            //System.out.println(stat);
 
             while (rs.next()) {
                 totalHrs = rs.getFloat(1);

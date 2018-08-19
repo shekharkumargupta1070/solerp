@@ -1,11 +1,12 @@
 package com.sol.erp;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.io.File;
 import java.io.FileWriter;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 
 public class ExcelExporter {
+
 	public void exportTable(JTable paramJTable, DefaultTableModel paramDefaultTableModel, File paramFile)
 			throws java.io.IOException {
 		FileWriter localFileWriter = new FileWriter(paramFile);
@@ -28,4 +29,7 @@ public class ExcelExporter {
 		localFileWriter.close();
 		System.out.println("write to " + paramFile);
 	}
+
+
+
 }

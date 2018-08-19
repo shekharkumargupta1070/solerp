@@ -6,28 +6,26 @@ import java.util.Objects;
 
 public class ProjectProgressDTO {
 
-    private String projectNo;
+    private long projectNo;
     private String activity;
-    private float estimatedHrs;
+    private float totalHrs;
     private float spentHrs;
     private float usedPercentage;
 
     public ProjectProgressDTO(){}
 
-    public ProjectProgressDTO(String projectNo, String activity) {
+    public ProjectProgressDTO(long projectNo, String activity) {
         this.projectNo = projectNo;
         this.activity = activity;
-        this.estimatedHrs = ProjectDAO.getProjectEstimatedHrs(projectNo, activity);
+        //this.totalHrs = ProjectDAO.getProjectEstimatedHrs(projectNo, activity);
         this.spentHrs = ProjectDAO.getProjectUsedHrs(projectNo, activity);
-
-        this.usedPercentage = (spentHrs/estimatedHrs) * 100;
     }
 
-    public String getProjectNo() {
+    public long getProjectNo() {
         return projectNo;
     }
 
-    public void setProjectNo(String projectNo) {
+    public void setProjectNo(long projectNo) {
         this.projectNo = projectNo;
     }
 
@@ -39,12 +37,12 @@ public class ProjectProgressDTO {
         this.activity = activity;
     }
 
-    public float getEstimatedHrs() {
-        return estimatedHrs;
+    public float getTotalHrs() {
+        return totalHrs;
     }
 
-    public void setEstimatedHrs(float estimatedHrs) {
-        this.estimatedHrs = estimatedHrs;
+    public void setTotalHrs(float totalHrs) {
+        this.totalHrs = totalHrs;
     }
 
     public float getSpentHrs() {
@@ -56,6 +54,9 @@ public class ProjectProgressDTO {
     }
 
     public float getUsedPercentage() {
+        if(totalHrs > 0) {
+            this.usedPercentage = (spentHrs / totalHrs) * 100;
+        }
         return usedPercentage;
     }
 
@@ -82,7 +83,7 @@ public class ProjectProgressDTO {
         return "ProjectProgressDTO{" +
                 "projectNo='" + projectNo + '\'' +
                 ", activity='" + activity + '\'' +
-                ", estimatedHrs=" + estimatedHrs +
+                ", totalHrs=" + totalHrs +
                 ", spentHrs=" + spentHrs +
                 ", usedPercentage=" + usedPercentage +
                 '}';
