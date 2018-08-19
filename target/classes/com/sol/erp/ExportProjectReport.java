@@ -58,11 +58,15 @@ public class ExportProjectReport {
 
         submitButton.addActionListener((actionEvent) -> {
 
-            JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-            int returnValue = fileChooser.showSaveDialog(null);
-            if (returnValue == JFileChooser.APPROVE_OPTION) {
+
+            if (isFormValidated()) {
+                JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+                //int returnValue = fileChooser.showSaveDialog(null);
+                //returnValue == JFileChooser.APPROVE_OPTION
+
+                fileChooser.showSaveDialog(null);
                 File file = fileChooser.getSelectedFile();
-                String fileName = file.getAbsolutePath();
+                final String fileName = file.getAbsolutePath();
 
 
                 long fromProjectNo = Long.parseLong(fromText.getText().trim());
@@ -90,7 +94,16 @@ public class ExportProjectReport {
 
                         this.setProgress(80);
                         this.publish(80);
-                        createExcelFile(progressMap, fileName);
+
+
+                        if(fileName == null || fileName.isEmpty()){
+                            String defaultFileName = FileSystemView.getFileSystemView().getHomeDirectory() + "/"+fromText.getText()+"-"+toText.getText();
+                            createExcelFile(progressMap, defaultFileName);
+                        }else{
+                            createExcelFile(progressMap, fileName);
+                        }
+
+
 
                         setProgress(100);
                         publish(100);
@@ -141,6 +154,22 @@ public class ExportProjectReport {
                 (screenSize.height - frameSize.height)/2);
         frame.setVisible(true);
         return frame;
+    }
+
+    private boolean isFormValidated(){
+        String fromProject = fromText.getText();
+        String toProject = toText.getText();
+        if(fromProject == null || fromProject.isEmpty()){
+            JOptionPane.showMessageDialog(frame, "Please enter From Project");
+            return false;
+        }
+        if(toProject == null || toProject.isEmpty()){
+            JOptionPane.showMessageDialog(frame, "Please enter To Project");
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
 

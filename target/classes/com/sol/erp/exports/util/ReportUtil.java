@@ -22,7 +22,7 @@ public class ReportUtil {
             ProjectProgressDTO detailingHrs = new ProjectProgressDTO(projectNo, "D");
             ProjectProgressDTO checkingHrs = new ProjectProgressDTO(projectNo, "C");
             ProjectProgressDTO tlHrs = new ProjectProgressDTO(projectNo, "T");
-            ProjectProgressDTO totalHrs = new ProjectProgressDTO(projectNo, "A");//a means TOTAL hrs
+            ProjectProgressDTO totalHrs = new ProjectProgressDTO(projectNo, "TOTAL");//a means TOTAL hrs
 
             totalHrs.setTotalHrs(totalHrs.getSpentHrs());
             detailingHrs.setTotalHrs(totalHrs.getSpentHrs());

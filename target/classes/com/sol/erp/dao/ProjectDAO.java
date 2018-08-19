@@ -1366,7 +1366,7 @@ public class ProjectDAO {
         if (hrsOf.equalsIgnoreCase("t")){
             hrsOfString = "D_C = 'J' and";
         }
-        if (hrsOf.equalsIgnoreCase("a")){
+        if (hrsOf.equalsIgnoreCase("TOTAL")){
             hrsOfString = "";
         }
 
