@@ -806,6 +806,11 @@ public class Attendance implements ActionListener, KeyListener, TableModelListen
 		}
 	}
 
+	public void refreshBreakTimeHrs(String breakTimeHrs){
+		int selectedRow = tableMain.getSelectedRow();
+		defaultTableModelMain.setValueAt(breakTimeHrs, selectedRow, 10);
+	}
+
 	public void showNameList() {
 		labelNameOfDay.setText(DateCalculationUtil.NameOfDay(String.valueOf(textFieldCalendar.getText())));
 
@@ -2295,6 +2300,7 @@ public class Attendance implements ActionListener, KeyListener, TableModelListen
 		if (paramActionEvent.getSource() == miBreakTimeEntry) {
 			BreakTimeEntry breakTimeEntry = new BreakTimeEntry();
 			breakTimeEntry.px();
+			breakTimeEntry.setAttendance(this);
 			if (tableMain.getSelectedRow() >= 0) {
 				breakTimeEntry.tf1
 						.setText(String.valueOf(defaultTableModelMain.getValueAt(tableMain.getSelectedRow(), 0)));

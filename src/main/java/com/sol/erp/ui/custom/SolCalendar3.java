@@ -1,22 +1,14 @@
 package com.sol.erp.ui.custom;
 
-import java.awt.Color;
-import java.awt.Dimension;
+import com.sol.erp.util.DateCalculationUtil;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
-
-import com.sol.erp.util.DateCalculationUtil;
 
 public class SolCalendar3 implements java.awt.event.ActionListener, java.awt.event.MouseListener, java.awt.event.KeyListener,
 		javax.swing.event.ChangeListener {
@@ -176,7 +168,7 @@ public class SolCalendar3 implements java.awt.event.ActionListener, java.awt.eve
 	int startDay;
 
 	public void maximizeCalendar() {
-		f.setTitle("skCalendar");
+		f.setTitle("SOLCalendar");
 		java.awt.Container localContainer = f.getContentPane();
 		localContainer.setLayout(new java.awt.BorderLayout());
 		calpanel.setLayout(new java.awt.BorderLayout());
@@ -232,7 +224,7 @@ public class SolCalendar3 implements java.awt.event.ActionListener, java.awt.eve
 
 		okbut1.addActionListener(this);
 
-		f.setSize(210, 270);
+		f.setSize(240, 330);
 		f.setLocationRelativeTo(datetf);
 
 		f.setVisible(true);

@@ -1,13 +1,12 @@
 package com.sol.erp;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.swing.JTextField;
-
 import com.sol.erp.util.DBConnectionUtil;
 import com.sol.erp.util.DateDifferencesUtil;
 import com.sol.erp.util.formater.SolDateFormatter;
+
+import javax.swing.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BreakTimeEntry
 		implements java.awt.event.ActionListener, java.awt.event.FocusListener, java.awt.event.KeyListener {
@@ -21,6 +20,7 @@ public class BreakTimeEntry
 	java.text.DecimalFormat df;
 	java.text.DecimalFormat df1;
 	java.text.DecimalFormat timeformat;
+	private Attendance attendance;
 
 	public BreakTimeEntry() {
 		affected = 0;
@@ -142,6 +142,9 @@ public class BreakTimeEntry
 		northpanel.add(rb1);
 		northpanel.add(rb2);
 
+		southpanel.add(deletebut);
+		southpanel.add(savebut);
+
 		tb.getTableHeader().setFont(fo);
 		tb.getTableHeader().setPreferredSize(new java.awt.Dimension(18, 18));
 		tb.setRowHeight(18);
@@ -205,9 +208,9 @@ public class BreakTimeEntry
 
 		localContainer.setBackground(java.awt.Color.white);
 
-		f.setSize(400, 350);
+		f.setSize(400, 450);
 		f.setLocation((ss.width - fs.width) / 4, (ss.height - fs.height) / 5);
-		f.setResizable(false);
+		//f.setResizable(false);
 		f.setVisible(true);
 		tf2.requestFocus();
 	}
@@ -215,6 +218,10 @@ public class BreakTimeEntry
 	javax.swing.table.DefaultTableModel model;
 	javax.swing.JTable tb;
 	javax.swing.JScrollPane sp;
+
+	public void setAttendance(Attendance attendance){
+		this.attendance = attendance;
+	}
 
 	public void empDetails() {
 		model.setNumRows(0);
@@ -246,8 +253,8 @@ public class BreakTimeEntry
 		java.sql.Date localDate = SolDateFormatter.DDMMYYtoSQL(tf1.getText());
 
 		if (rb1.isSelected()) {
+			//Deleting BREAK HRS from HR_BREAK_TIME table.
 			str2 = "delete from HR_BREAK_TIME  where emp_code = ? and date = ?";
-
 			try {
 				pstat = con.prepareStatement(str2);
 				pstat.setString(1, str1);
@@ -260,10 +267,22 @@ public class BreakTimeEntry
 			} catch (Exception localException1) {
 				System.out.println(localException1);
 			}
+
+			//Setting BREAK HRS as 0 hrs to HRTIMEMASTER table.
+			str2 = "update HRTIMEMASTER set break_hrs = ? where emp_code = ? and date = ?";
+			try {
+				pstat = con.prepareStatement(str2);
+				pstat.setInt(1, 0);
+				pstat.setString(2, str1);
+				pstat.setDate(3, localDate);
+				affected = pstat.executeUpdate();
+			} catch (Exception localException2) {
+				System.out.println(localException2);
+			}
 		}
 		if (rb2.isSelected()) {
+			//Updating OT HRS as 0 hrs to HRTIMEMASTER TABLE.
 			str2 = "update HRTIMEMASTER set ot2 = ? where emp_code = ? and date = ?";
-
 			try {
 				pstat = con.prepareStatement(str2);
 				pstat.setInt(1, 0);
@@ -286,7 +305,7 @@ public class BreakTimeEntry
 	JTextField tf2;
 	JTextField tf3;
 
-	public void showRecord() {
+	public void showBreakTimeDetails() {
 		model.setNumRows(0);
 		java.sql.Date localDate = SolDateFormatter.DDMMYYtoSQL(tf1.getText());
 
@@ -316,7 +335,7 @@ public class BreakTimeEntry
 	JTextField tf5;
 	JTextField tf6;
 
-	public void showRecord2() {
+	public void showOTDetails() {
 		model.setNumRows(0);
 		java.sql.Date localDate = SolDateFormatter.DDMMYYtoSQL(tf1.getText());
 
@@ -343,8 +362,8 @@ public class BreakTimeEntry
 	javax.swing.JButton closebut;
 	javax.swing.JRadioButton rb1;
 
-	public void totalHRS() {
-		new Attendance();
+
+	public void calculateTotalHRS() {
 		String str = DateDifferencesUtil.getTimeDiff(tf4.getText(), tf5.getText());
 
 		if (Float.parseFloat(str) <= 0.0F) {
@@ -355,20 +374,14 @@ public class BreakTimeEntry
 			tf5.selectAll();
 		} else {
 			tf6.setText(str);
-			saveRecord();
 		}
+		collectRecord();
 	}
 
 	public void collectRecord() {
 		model.addRow(new Object[] { tf2.getText(), tf4.getText(), tf5.getText(), tf6.getText() });
-		tf4.setText("");
-		tf5.setText("");
-		tf6.setText("");
-		tf4.requestFocus();
 
-		if ((tb.getRowCount() > 1) ||
-
-		(tb.getRowCount() > 2)) {
+		if ((tb.getRowCount() > 1) || (tb.getRowCount() > 2)) {
 			model.removeRow(tb.getRowCount() - 2);
 		}
 
@@ -378,7 +391,14 @@ public class BreakTimeEntry
 			int k = SolDateFormatter.convertHrsToMinute(String.valueOf(model.getValueAt(j, 3)));
 			i += k;
 		}
-		model.addRow(new Object[] { "", "", "", String.valueOf(SolDateFormatter.convertMinuteToHRS(i)) });
+		String breakTimeHrs = String.valueOf(SolDateFormatter.convertMinuteToHRS(i));
+		model.addRow(new Object[] { "", "", "",  breakTimeHrs});
+		attendance.refreshBreakTimeHrs(breakTimeHrs);
+
+		tf4.setText("");
+		tf5.setText("");
+		tf6.setText("");
+		tf4.requestFocus();
 	}
 
 	javax.swing.JRadioButton rb2;
@@ -387,35 +407,42 @@ public class BreakTimeEntry
 	javax.swing.JPanel northpanel;
 	javax.swing.JPanel westpanel;
 
-	public void saveRecord() {
+	public void saveBreakTimeDetails() {
 		java.sql.Date localDate = SolDateFormatter.DDMMYYtoSQL(tf1.getText());
 
-		String str1 = String.valueOf(tf4.getText());
-		String str2 = String.valueOf(tf5.getText());
-		String str3 = String.valueOf(tf6.getText());
+		for(int i=0; i<tb.getRowCount()-1; i++) {
+			String str1 = String.valueOf(tf4.getText());
+			String str2 = String.valueOf(tf5.getText());
+			String str3 = String.valueOf(tf6.getText());
 
-		try {
-			pstat = con.prepareStatement("insert into HR_BREAK_TIME values(?,'" + tf2.getText() + "', ?, ?, ?) ");
-			pstat.setDate(1, localDate);
-			pstat.setString(2, String.valueOf(Float.parseFloat(str1)));
-			pstat.setString(3, String.valueOf(Float.parseFloat(str2)));
-			pstat.setString(4, String.valueOf(Float.parseFloat(str3)));
-			affected = pstat.executeUpdate();
-			if (affected > 0) {
-				collectRecord();
+			String outTime = (String) model.getValueAt(i, 1);
+			String inTime = (String) model.getValueAt(i, 2);
+			String totalTime = (String) model.getValueAt(i, 3);
+
+			try {
+				pstat = con.prepareStatement("insert into HR_BREAK_TIME values(?,'" + tf2.getText() + "', ?, ?, ?) ");
+				pstat.setDate(1, localDate);
+				pstat.setString(2, outTime);
+				pstat.setString(3, inTime);
+				pstat.setString(4, totalTime);
+				affected = pstat.executeUpdate();
+				if (affected > 0) {
+					javax.swing.JOptionPane.showMessageDialog(f, "Break Time saved successfully.");
+					model.setNumRows(0);
+				}
+			} catch (Exception localException) {
+				javax.swing.JOptionPane.showMessageDialog(f, "This Time is Allready Added for This Employee.");
 			}
-		} catch (Exception localException) {
-			javax.swing.JOptionPane.showMessageDialog(f, "This Time is Allready Added for This Employee.");
 		}
 	}
 
-	public void updateExtraOT() {
+	public void saveExtraOTDetails() {
 		model.setNumRows(0);
 
 		java.sql.Date localDate = SolDateFormatter.DDMMYYtoSQL(tf1.getText());
 
-		String.valueOf(tf4.getText());
-		String.valueOf(tf5.getText());
+		String str1 = String.valueOf(tf4.getText());
+		String str2 = String.valueOf(tf5.getText());
 		String str3 = String.valueOf(tf6.getText());
 
 		try {
@@ -425,7 +452,8 @@ public class BreakTimeEntry
 			pstat.setDate(2, localDate);
 			affected = pstat.executeUpdate();
 			if (affected > 0) {
-				collectRecord();
+				javax.swing.JOptionPane.showMessageDialog(f, "Extra OT saved successfully.");
+				model.setNumRows(0);
 			}
 		} catch (Exception localException) {
 			javax.swing.JOptionPane.showMessageDialog(f, "This Time is Allready Added for This Employee.");
@@ -481,9 +509,17 @@ public class BreakTimeEntry
 				String empCode = rs.getString("EMP_CODE");
 				float f1 = rs.getFloat("TOTAL_TIME");
 
-				int k = SolDateFormatter.convertHrsToMinute(String.valueOf(f1));
-				String hrs = SolDateFormatter.convertMinuteToHRS(k);
-				breakHrsMap.put(empCode, hrs);
+				if(!breakHrsMap.containsKey(empCode)) {
+					int k = SolDateFormatter.convertHrsToMinute(String.valueOf(f1));
+					String hrs = SolDateFormatter.convertMinuteToHRS(k);
+					breakHrsMap.put(empCode, hrs);
+				}else{
+					int existingValue = SolDateFormatter.convertHrsToMinute(breakHrsMap.get(empCode));
+					int newValue = SolDateFormatter.convertHrsToMinute(String.valueOf(f1));
+					int totalMinutes = existingValue + newValue;
+					String hrs = SolDateFormatter.convertMinuteToHRS(totalMinutes);
+					breakHrsMap.put(empCode, hrs);
+				}
 			}
 		} catch (Exception localException) {
 			javax.swing.JOptionPane.showMessageDialog(f, localException.getMessage().toString());
@@ -503,7 +539,12 @@ public class BreakTimeEntry
 
 	public void actionPerformed(java.awt.event.ActionEvent paramActionEvent) {
 		if (paramActionEvent.getSource() == savebut) {
-			updateExtraOT();
+			if(rb1.isSelected()){
+				saveBreakTimeDetails();
+			}
+			if(rb2.isSelected()) {
+				saveExtraOTDetails();
+			}
 		}
 		if (paramActionEvent.getSource() == closebut) {
 			f.setVisible(false);
@@ -513,26 +554,7 @@ public class BreakTimeEntry
 		}
 		if (paramActionEvent.getSource() == tf2) {
 			empDetails();
-			showRecord();
 		}
-		if ((paramActionEvent.getSource() != tf5) ||
-
-		(paramActionEvent.getSource() == rb2)) {
-			tf4.setText("0");
-			tf5.setText("0");
-			tf6.setText(" ");
-			tf4.setEditable(false);
-			tf5.setEditable(false);
-			tf6.setEditable(true);
-			showRecord2();
-
-			southpanel.add(deletebut);
-			southpanel.add(savebut);
-
-			southpanel.revalidate();
-			southpanel.setBackground(java.awt.Color.gray);
-		}
-
 		if (paramActionEvent.getSource() == rb1) {
 			tf4.setText("");
 			tf5.setText("");
@@ -540,12 +562,18 @@ public class BreakTimeEntry
 			tf5.setEditable(true);
 			tf6.setEditable(false);
 			tf6.setText("0");
-			showRecord();
-
-			southpanel.remove(savebut);
-			southpanel.add(deletebut);
-			southpanel.revalidate();
-			southpanel.setBackground(java.awt.Color.darkGray);
+			showBreakTimeDetails();
+			//collectRecord();
+		}
+		if(paramActionEvent.getSource() == rb2){
+			tf4.setText("0");
+			tf5.setText("0");
+			tf6.setText(" ");
+			tf4.setEditable(false);
+			tf5.setEditable(false);
+			tf6.setEditable(true);
+			showOTDetails();
+			//collectRecord();
 		}
 	}
 
@@ -556,8 +584,8 @@ public class BreakTimeEntry
 		if (paramFocusEvent.getSource() == tf2) {
 			empDetails();
 		}
-		if (paramFocusEvent.getSource() == tf5) {
-			totalHRS();
+		if(paramFocusEvent.getSource() == tf5){
+			calculateTotalHRS();
 		}
 	}
 
