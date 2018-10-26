@@ -411,10 +411,6 @@ public class BreakTimeEntry
 		java.sql.Date localDate = SolDateFormatter.DDMMYYtoSQL(tf1.getText());
 
 		for(int i=0; i<tb.getRowCount()-1; i++) {
-			String str1 = String.valueOf(tf4.getText());
-			String str2 = String.valueOf(tf5.getText());
-			String str3 = String.valueOf(tf6.getText());
-
 			String outTime = (String) model.getValueAt(i, 1);
 			String inTime = (String) model.getValueAt(i, 2);
 			String totalTime = (String) model.getValueAt(i, 3);
@@ -426,14 +422,13 @@ public class BreakTimeEntry
 				pstat.setString(3, inTime);
 				pstat.setString(4, totalTime);
 				affected = pstat.executeUpdate();
-				if (affected > 0) {
-					javax.swing.JOptionPane.showMessageDialog(f, "Break Time saved successfully.");
-					model.setNumRows(0);
-				}
+
 			} catch (Exception localException) {
 				javax.swing.JOptionPane.showMessageDialog(f, "This Time is Allready Added for This Employee.");
 			}
 		}
+		javax.swing.JOptionPane.showMessageDialog(f, "Break Time saved successfully.");
+		model.setNumRows(0);
 	}
 
 	public void saveExtraOTDetails() {

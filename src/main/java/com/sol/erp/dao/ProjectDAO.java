@@ -1358,13 +1358,13 @@ public class ProjectDAO {
 
         String hrsOfString = "";
         if(hrsOf.equalsIgnoreCase("d") ){
-            hrsOfString = "D_C = 'D' and";
+            hrsOfString = "D_C in ('D', 'M', 'RM') and";
         }
         if(hrsOf.equalsIgnoreCase("c")){
-            hrsOfString = "D_C = 'C' and";
+            hrsOfString = "D_C in ('C', 'J', 'RC') and";
         }
-        if (hrsOf.equalsIgnoreCase("t")){
-            hrsOfString = "D_C = 'J' and";
+        if (hrsOf.equalsIgnoreCase("e")){
+            hrsOfString = "D_C in ('E', 'RE') and";
         }
         if (hrsOf.equalsIgnoreCase("TOTAL")){
             hrsOfString = "";
@@ -1375,7 +1375,7 @@ public class ProjectDAO {
         ResultSet rs = null;
 
         String query = "select sum(TOTAL_TIME) from hrtimemaster where "+hrsOfString+"  PROJECT_NO = ?";
-        //System.out.println("Query: "+query);
+        System.out.println("Query: "+query);
         try {
             con = DBConnectionUtil.getConnection();
             stat = con.prepareStatement(query);

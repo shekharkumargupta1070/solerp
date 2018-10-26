@@ -11,6 +11,7 @@ import com.sol.erp.util.DBConnectionUtil;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -114,6 +115,12 @@ public class LaunchProgress extends javax.swing.JFrame {
 			Logger.getLogger(LaunchProgress.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		launchProgress.launchApp();
+
+		BreakTimeEntry breakTimeEntry = new BreakTimeEntry();
+		Map<String, String> totalBreakTime = breakTimeEntry.getTotalBreakTime("15/01/2018");
+		String deu = totalBreakTime.get("DEU");
+		System.out.println("DEU: "+deu);
+
 
 	}
 

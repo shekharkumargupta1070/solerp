@@ -6,6 +6,11 @@ import java.util.Objects;
 
 public class ProjectProgressDTO {
 
+    private static final String ACTIVITY_MODELING = "Modeling";
+    private static final String ACTIVITY_EDITING = "Editing";
+    private static final String ACTIVITY_CHECKING = "Checking";
+    private static final String ACTIVITY_TOTAL = "Total";
+
     private long projectNo;
     private String activity;
     private float totalHrs;
@@ -30,7 +35,20 @@ public class ProjectProgressDTO {
     }
 
     public String getActivity() {
-        return activity;
+        switch (activity){
+            case "D": return ACTIVITY_MODELING;
+            case "M": return ACTIVITY_MODELING;
+            case "RM": return ACTIVITY_MODELING;
+
+            case "C": return ACTIVITY_CHECKING;
+            case "J": return ACTIVITY_CHECKING;
+            case "RC": return ACTIVITY_CHECKING;
+
+            case "E": return ACTIVITY_EDITING;
+            case "RE": return ACTIVITY_EDITING;
+
+            default: return ACTIVITY_TOTAL;
+        }
     }
 
     public void setActivity(String activity) {
