@@ -33,7 +33,7 @@ public class ExportProjectReport {
 
 
     public ExportProjectReport(){
-        frame = new JInternalFrame("Export Project Report");
+        frame = new JInternalFrame("Export Project Report", false, true, false, true);
         northComponentPanel = new JPanel();
         fromLabel = new JLabel("From Project: ");
         toLabel = new JLabel("To Project: ");
